@@ -152,6 +152,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\DeckOfCards.cs" />
+    <Compile Include="Models\PokerLogic.cs" />
     <Compile Include="Models\Rank.cs" />
     <Compile Include="Models\Suit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

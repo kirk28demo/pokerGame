@@ -9,56 +9,54 @@ namespace Poker_Cards.Controllers
 {
     public class HomeController : Controller
     {
-        
-        public HomeController ()
+        Random rnd = new Random();
+        public HomeController()
         {
-            Suit suitObj = new Suit();
-            Rank rankObj = new Rank();
-            char[] charTemp =  new char[] { 'S', 'D', 'H', 'C' } ;
-            string[] stringTemp = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
-            List<string> lstSuitChar = new List<string>();
-            List<string> lstRankStr = new List<string>();
-            for (int i = 0; i < charTemp.Length; i++)
-            {
-                lstSuitChar.Add(charTemp[i].ToString());
-            }
-            suitObj.suitList = lstSuitChar;
-            for (int i = 0; i < stringTemp.Length; i++)
-            {
-                lstRankStr.Add(stringTemp[i]);
-            }
-            rankObj.rankList = lstRankStr;
-            ShuffleCards(suitObj, rankObj);
         }
-        private string ShuffleCards(Suit suitObj, Rank rankObj)
+        private Card[] myCard = new Card[5];
+        DeckOfCards deckCardsObj = new DeckOfCards();
+        List<Card> card123 = new List<Card>();
+        private void Deal()
         {
-            Random rnd = new Random();
-            int suitRndNum = rnd.Next(1, suitObj.suitList.Count);
-            int rankRndNum = rnd.Next(1, rankObj.rankList.Count);
-            string suitTemp = string.Empty;
-            string rankTemp = string.Empty;
-            for (int i = 0; i < suitObj.suitList.Count; i++)
-            {   
-                if (i == suitRndNum)
-                    suitTemp = suitObj.suitList[i];
-            }
-            for (int i = 1; i < rankObj.rankList.Count; i++)
+            for (int j = 0; j < 5; j++)
             {
-                if (i == rankRndNum)
-                    suitTemp = rankObj.rankList[i];
+                myCard[j] = deckCardsObj.GetDeck[j];
             }
-            
-            return "";
         }
-
+        private string DisplaySuit()
+        {
+            string tempSuit = string.Empty;
+            foreach (Card item in myCard)
+            {
+                tempSuit += item.CardSuit.ToString() + "-";
+            }
+            return tempSuit;
+        }
+        private string DisplayRank()
+        {
+            string tempRank = string.Empty;
+            foreach (Card item in myCard)
+            {
+                tempRank += item.CardRank.ToString() + "-";
+            }
+            return tempRank;
+        }
         public ActionResult Index()
         {
+            deckCardsObj.SetupCard();
+            Deal();
+            PokerLogic pokerObj = new PokerLogic();
+            pokerObj.MyCards = myCard;
+            ViewBag.MessageCards = DisplaySuit();
+            ViewBag.MessageRank = DisplayRank();
+            ViewBag.MessageResult = pokerObj.EvaluateCard().ToString();
             return View();
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+            
 
             return View();
         }
